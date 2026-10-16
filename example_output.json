@@ -1,0 +1,20 @@
+{
+  "token_key": "56:0x1111111111111111111111111111111111111111",
+  "evidence_ids": [
+    "fixture:jade"
+  ],
+  "policy_version": "prototype-v1",
+  "decision": "RESEARCH",
+  "blocked_reasons": [],
+  "field_presence_coverage": 1.0,
+  "summary": "Prototype checks passed; continue research. No execution is authorized.",
+  "uncertainties": [
+    "Offline input is not independently verified.",
+    "Portfolio limits and live quote/intent validation are outside this prototype."
+  ],
+  "invalidation": [
+    "Evidence expires or changes",
+    "Liquidity or permissions change"
+  ],
+  "execution_authorized": false
+}

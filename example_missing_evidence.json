@@ -1,0 +1,22 @@
+{
+  "chain_id": 56,
+  "token_address": "0x1111111111111111111111111111111111111111",
+  "evidence_ids": [
+    "fixture:jade"
+  ],
+  "market_observed_at": "2026-10-16T17:33:25.657328+00:00",
+  "security_observed_at": "2026-10-16T17:33:25.657328+00:00",
+  "liquidity_usd": 420000,
+  "order_usd": 50,
+  "price_impact_bps": 30,
+  "slippage_bps": 50,
+  "buy_tax_bps": 0,
+  "sell_tax_bps": 0,
+  "classified_top10_pct": 38,
+  "source_verified": null,
+  "sell_simulation_passed": null,
+  "permissions_reviewed": true,
+  "dangerous_permissions": false,
+  "provider_conflict": false,
+  "finalized": true
+}
