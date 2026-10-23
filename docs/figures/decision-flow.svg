@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 720" role="img" aria-labelledby="title desc">
+  <title id="title">Decision flow</title>
+  <desc id="desc">Each failed check joins the blocked-reason list. An empty list yields RESEARCH. Execution stays unauthorized either way.</desc>
+  <rect width="860" height="720" rx="24" fill="#10211c"/>
+  <text x="40" y="48" fill="#f3f6f2" font-family="Georgia, serif" font-size="26">One empty list, or abstain</text>
+  <g font-family="Segoe UI, Helvetica, sans-serif" font-size="15" fill="#f3f6f2">
+    <rect x="250" y="78" width="300" height="46" rx="23" fill="#245543"/>
+    <text x="400" y="107" text-anchor="middle">Evidence packet</text>
+    <rect x="230" y="156" width="340" height="46" rx="12" fill="#17352c" stroke="#d4b483"/>
+    <text x="400" y="185" text-anchor="middle">Object, chain 56, address, evidence ids</text>
+    <rect x="230" y="234" width="340" height="46" rx="12" fill="#17352c" stroke="#d4b483"/>
+    <text x="400" y="263" text-anchor="middle">Eighteen fields typed and finite</text>
+    <rect x="230" y="312" width="340" height="46" rx="12" fill="#17352c" stroke="#d4b483"/>
+    <text x="400" y="341" text-anchor="middle">Market age 060s · security age 0300s</text>
+    <rect x="230" y="390" width="340" height="46" rx="12" fill="#17352c" stroke="#d4b483"/>
+    <text x="400" y="419" text-anchor="middle">Numeric gates, required trues, vetoes</text>
+    <rect x="70" y="500" width="300" height="78" rx="16" fill="#1d3b2e" stroke="#8fd0a8"/>
+    <text x="220" y="532" text-anchor="middle" fill="#8fd0a8" font-size="18">RESEARCH</text>
+    <text x="220" y="556" text-anchor="middle" font-size="13" fill="#c5d5cc">blocked_reasons is empty</text>
+    <rect x="490" y="500" width="300" height="78" rx="16" fill="#3a2422" stroke="#d4766a"/>
+    <text x="640" y="532" text-anchor="middle" fill="#d4766a" font-size="18">ABSTAIN</text>
+    <text x="640" y="556" text-anchor="middle" font-size="13" fill="#c5d5cc">one or more blocked reasons</text>
+    <rect x="180" y="620" width="500" height="52" rx="14" fill="#17352c" stroke="#d4b483"/>
+    <text x="430" y="652" text-anchor="middle">execution_authorized remains false</text>
+  </g>
+  <g stroke="#d4b483" stroke-width="1.5" fill="none">
+    <path d="M400 124 V156"/>
+    <path d="M400 202 V234"/>
+    <path d="M400 280 V312"/>
+    <path d="M400 358 V390"/>
+    <path d="M340 436 V478 H220 V500"/>
+    <path d="M460 436 V478 H640 V500"/>
+    <path d="M220 578 V604 H430 V620"/>
+    <path d="M640 578 V604 H430"/>
+  </g>
+  <g fill="#d4b483">
+    <path d="M394 156 h12 l-6 8 z"/>
+    <path d="M394 234 h12 l-6 8 z"/>
+    <path d="M394 312 h12 l-6 8 z"/>
+    <path d="M394 390 h12 l-6 8 z"/>
+    <path d="M214 492 h12 l-6 8 z"/>
+    <path d="M634 492 h12 l-6 8 z"/>
+    <path d="M424 612 h12 l-6 8 z"/>
+  </g>
+  <text x="248" y="470" fill="#8fd0a8" font-family="Segoe UI, Helvetica, sans-serif" font-size="12">pass</text>
+  <text x="560" y="470" fill="#d4766a" font-family="Segoe UI, Helvetica, sans-serif" font-size="12">any failure</text>
+</svg>
