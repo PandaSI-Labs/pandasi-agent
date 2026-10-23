@@ -169,3 +169,58 @@ $$
 
 <img src="docs/figures/coverage.svg" alt="Sixteen of eighteen required fields present on the incomplete sample">
 
+## Numeric gates
+
+These comparisons run only when all seven numbers are finite and non-negative. A boolean, `NaN`, infinity, a string, or a negative value is `Missing or invalid <field>` and skips this block.
+
+$$
+L \ge 100000
+\qquad
+0 < q \le 100
+\qquad
+I \le 100
+\qquad
+S \le 100
+\qquad
+\max(\tau_{\mathrm{buy}}, \tau_{\mathrm{sell}}) \le 500
+\qquad
+H_{10} \le 40
+$$
+
+| Symbol | Field | Relation | Limit | Blocked reason when it fails | Fixture |
+| --- | --- | --- | ---: | --- | ---: |
+| \(L\) | `liquidity_usd` | at least | 100000 | Liquidity below floor | 420000 |
+| \(q\) | `order_usd` | greater than 0 and at most | 100 | Order outside allowed range | 50 |
+| \(I\) | `price_impact_bps` | at most | 100 | Excessive price impact | 30 |
+| \(S\) | `slippage_bps` | at most | 100 | Excessive slippage | 50 |
+| \(\tau_{\mathrm{buy}}\) | `buy_tax_bps` | the greater tax at most | 500 | Excessive token tax | 0 |
+| \(\tau_{\mathrm{sell}}\) | `sell_tax_bps` | the greater tax at most | 500 | Excessive token tax | 0 |
+| \(H_{10}\) | `classified_top10_pct` | at most | 40 | Holder concentration above ceiling | 38 |
+
+An order of `0` fails, and an order of `100` passes. Holder concentration of `40` passes, and `40.1` abstains. Impact, slippage, and tax use the same edge: the limit itself passes, and one basis point past it abstains. Liquidity of `99999` is below the floor.
+
+<img src="docs/figures/gates.svg" alt="Bar diagram of the jade fixture inside each numeric gate">
+
+### Reason catalog
+
+| Reason | When it is added |
+| --- | --- |
+| `Packet must be an object` | The top-level JSON value is not an object |
+| `Invalid token address` | The address is missing or is not `0x` plus 40 hex digits |
+| `Unsupported chain` | `chain_id` is not the integer 56 |
+| `Missing valid evidence IDs` | `evidence_ids` is not a non-empty list of non-blank strings |
+| `Missing or invalid <field>` | A numeric or boolean field has the wrong type, is not finite, or is negative |
+| `Missing or invalid market_observed_at` | The market stamp is missing or not a zoned timestamp |
+| `Missing or invalid security_observed_at` | The security stamp is missing or not a zoned timestamp |
+| `Stale or future market_observed_at` | Market age is negative or greater than 60 seconds |
+| `Stale or future security_observed_at` | Security age is negative or greater than 300 seconds |
+| `Liquidity below floor` | Liquidity is under 100000 USD |
+| `Order outside allowed range` | The order is 0 or greater than 100 USD |
+| `Excessive price impact` | Impact is above 100 bps |
+| `Excessive slippage` | Slippage is above 100 bps |
+| `Excessive token tax` | The larger of the buy and sell tax is above 500 bps |
+| `Holder concentration above ceiling` | Classified top-ten share is above 40 percent |
+| `Required check failed: <field>` | A required boolean is present and `false` |
+| `Risk veto: <field>` | `dangerous_permissions` or `provider_conflict` is `true` |
+| `Input error: ...` | The command-line file cannot be read or parsed |
+
