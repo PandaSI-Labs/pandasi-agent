@@ -131,3 +131,41 @@ $$
 
 So `100` bps is 1 percent, and the tax ceiling of `500` bps is 5 percent. The code compares the raw basis-point numbers. It does not convert them before the test.
 
+## Freshness and coverage
+
+Both observation fields must be timezone-aware ISO-8601 strings. A trailing `Z` is read as UTC. A naive timestamp, a number, or a missing key is invalid.
+
+$$
+a(t) = t_{\mathrm{now}} - t
+$$
+
+$$
+0 \le a(t_{\mathrm{market}}) \le 60
+\qquad
+0 \le a(t_{\mathrm{security}}) \le 300
+$$
+
+The market window is one minute. The security window is five minutes. Age is measured in seconds. The boundary is inclusive: a market observation exactly 60 seconds old still passes, and 61 seconds abstains. A timestamp one second in the future abstains. The tests pin those three edges.
+
+<img src="docs/figures/freshness.svg" alt="Market window of 60 seconds and security window of 300 seconds">
+
+Coverage answers a different question: how many required keys are not null. It is rounded to three decimal places. It is not a trust score, a probability, or a weighted rating.
+
+$$
+R = N \cup Q \cup \{\texttt{market\_observed\_at}, \texttt{security\_observed\_at}, \texttt{evidence\_ids}, \texttt{chain\_id}, \texttt{token\_address}\}
+$$
+
+$$
+|R| = 18
+\qquad
+C(p) = \mathrm{round}\!\left(\frac{|\{k \in R : p_k \neq \mathrm{null}\}|}{18},\, 3\right)
+$$
+
+\(N\) is the seven numeric fields and \(Q\) is the six boolean fields. A present value can still be the wrong type, a failing check, or a veto. A fully present packet that trips a veto has coverage `1.0` and decision `ABSTAIN`. The incomplete sample below has sixteen present fields:
+
+$$
+C = \mathrm{round}(16/18,\, 3) = 0.889
+$$
+
+<img src="docs/figures/coverage.svg" alt="Sixteen of eighteen required fields present on the incomplete sample">
+
