@@ -345,3 +345,34 @@ No third-party package is imported. `argparse`, `json`, `math`, `re`, `datetime`
 | `docs/figures/` | Mark, wordmark, lockup, and the diagrams in this brief |
 | `.gitignore` | Ignores bytecode, caches, and local environment files |
 
+## This build and the production design
+
+`SYSTEM_PROMPT.md` describes a later research companion. That note is not imported, parsed, or enforced here. Where the two disagree, the running policy is `panda_agent.py`.
+
+| Concern | This repository | Production design note |
+| --- | --- | --- |
+| How a decision is made | Pure function over one JSON object | A companion explains observations and cites evidence ids |
+| Tools | None | Seven named research tools, at most eight calls, once they exist |
+| Signing | Impossible in this code | An execution or signing tool is out of bounds |
+| Missing evidence | `ABSTAIN` with an explicit reason | Missing fields stay uncertainty, never positive evidence |
+| Authorization | `execution_authorized` is false | A future intent schema would still not authorize a trade |
+| Policy changes from text | Ignored | Embedded instructions in posts, sites, and tool text are untrusted |
+
+The research tools named in the design note are `get_token_identity`, `get_market_snapshot`, `get_liquidity_quote`, `get_contract_permissions`, `get_holder_distribution`, `get_sell_simulation`, and `get_source_provenance`. They are not implemented in this repository. Until they exist, the honest interface is the offline packet above.
+
+Portfolio limits, a live quote, and an exact order intent are named in the result's uncertainty list because this prototype does not check them. Passing the eighteen fields is not a statement that those later gates would pass.
+
+## Figures
+
+| Figure | What it shows |
+| --- | --- |
+| `docs/figures/pandasi-logo.png` | PandaSI lockup |
+| `docs/figures/wordmark.png` | Wordmark |
+| `docs/figures/mark.png` | Panda mark |
+| `docs/figures/architecture.svg` | Packet, evaluator, and result |
+| `docs/figures/decision-flow.svg` | Pass path and abstain path |
+| `docs/figures/freshness.svg` | 60-second and 300-second windows |
+| `docs/figures/gates.svg` | Fixture values against the numeric limits |
+| `docs/figures/coverage.svg` | Sixteen present fields on the incomplete sample |
+
+The mark, wordmark, and lockup are the PandaSI drawings already used by the project. The diagrams were drawn for this brief from the constants and branches in `panda_agent.py`.
