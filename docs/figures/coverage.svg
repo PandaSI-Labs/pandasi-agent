@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 340" role="img" aria-labelledby="title desc">
+  <title id="title">Field presence for the incomplete sample</title>
+  <desc id="desc">Sixteen of eighteen required fields are present. source_verified and sell_simulation_passed are null, so coverage rounds to 0.889.</desc>
+  <rect width="900" height="340" rx="24" fill="#10211c"/>
+  <text x="36" y="46" fill="#f3f6f2" font-family="Georgia, serif" font-size="26">Presence is not approval</text>
+  <text x="36" y="74" fill="#c5d5cc" font-family="Segoe UI, Helvetica, sans-serif" font-size="14">Incomplete sample · 16 present / 18 required · coverage 0.889 · decision ABSTAIN</text>
+  <g font-family="Segoe UI, Helvetica, sans-serif" font-size="11" fill="#f3f6f2">
+    <g>
+      <rect x="36" y="104" width="128" height="36" rx="8" fill="#1f6b45"/><text x="100" y="126" text-anchor="middle">liquidity_usd</text>
+      <rect x="172" y="104" width="128" height="36" rx="8" fill="#1f6b45"/><text x="236" y="126" text-anchor="middle">order_usd</text>
+      <rect x="308" y="104" width="128" height="36" rx="8" fill="#1f6b45"/><text x="372" y="126" text-anchor="middle">price_impact</text>
+      <rect x="444" y="104" width="128" height="36" rx="8" fill="#1f6b45"/><text x="508" y="126" text-anchor="middle">slippage_bps</text>
+      <rect x="580" y="104" width="128" height="36" rx="8" fill="#1f6b45"/><text x="644" y="126" text-anchor="middle">buy_tax_bps</text>
+      <rect x="716" y="104" width="148" height="36" rx="8" fill="#1f6b45"/><text x="790" y="126" text-anchor="middle">sell_tax_bps</text>
+    </g>
+    <g>
+      <rect x="36" y="152" width="148" height="36" rx="8" fill="#1f6b45"/><text x="110" y="174" text-anchor="middle">top10_pct</text>
+      <rect x="192" y="152" width="168" height="36" rx="8" fill="#3a2422" stroke="#d4766a"/><text x="276" y="174" text-anchor="middle">source_verified</text>
+      <rect x="368" y="152" width="210" height="36" rx="8" fill="#3a2422" stroke="#d4766a"/><text x="473" y="174" text-anchor="middle">sell_simulation_passed</text>
+      <rect x="586" y="152" width="150" height="36" rx="8" fill="#1f6b45"/><text x="661" y="174" text-anchor="middle">permissions</text>
+      <rect x="744" y="152" width="120" height="36" rx="8" fill="#1f6b45"/><text x="804" y="174" text-anchor="middle">finalized</text>
+    </g>
+    <g>
+      <rect x="36" y="200" width="170" height="36" rx="8" fill="#1f6b45"/><text x="121" y="222" text-anchor="middle">dangerous_permissions</text>
+      <rect x="214" y="200" width="150" height="36" rx="8" fill="#1f6b45"/><text x="289" y="222" text-anchor="middle">provider_conflict</text>
+      <rect x="372" y="200" width="160" height="36" rx="8" fill="#1f6b45"/><text x="452" y="222" text-anchor="middle">market_observed_at</text>
+      <rect x="540" y="200" width="170" height="36" rx="8" fill="#1f6b45"/><text x="625" y="222" text-anchor="middle">security_observed_at</text>
+      <rect x="718" y="200" width="146" height="36" rx="8" fill="#1f6b45"/><text x="791" y="222" text-anchor="middle">evidence_ids</text>
+    </g>
+    <g>
+      <rect x="36" y="248" width="120" height="36" rx="8" fill="#1f6b45"/><text x="96" y="270" text-anchor="middle">chain_id</text>
+      <rect x="164" y="248" width="150" height="36" rx="8" fill="#1f6b45"/><text x="239" y="270" text-anchor="middle">token_address</text>
+    </g>
+  </g>
+  <text x="36" y="314" fill="#c5d5cc" font-family="Segoe UI, Helvetica, sans-serif" font-size="13">Red cells are null. They are present in the file as JSON null, and the policy treats null as absent.</text>
+</svg>
