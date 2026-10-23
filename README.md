@@ -62,3 +62,30 @@ Urgency in a surrounding note, a ticker, or a comment inside the packet cannot c
 | Follow instructions hidden in token metadata | Those strings are not inputs to the policy |
 | Change the policy from the packet | Thresholds live in `POLICY` inside `panda_agent.py` |
 
+## How a packet moves
+
+<img src="docs/figures/architecture.svg" alt="Diagram of an evidence packet entering evaluate and leaving as RESEARCH or ABSTAIN">
+
+`evaluate(packet, now=None)` is the whole policy. `now` defaults to the current UTC time, which lets tests freeze the clock. `main` loads JSON from `--input` or builds the fictional jade fixture, prints indented JSON, and exits. A missing file or broken JSON becomes an abstention whose reason starts with `Input error:`.
+
+```mermaid
+flowchart TD
+  packet[Evidence packet] --> schema{Object, chain 56, address, evidence ids}
+  schema -->|fail| abstain[ABSTAIN]
+  schema --> typed{Numbers finite and checks boolean}
+  typed -->|fail| abstain
+  typed --> clocks{Clocks inside their windows}
+  clocks -->|fail| abstain
+  clocks --> gates{Gates, required trues, and vetoes}
+  gates -->|fail| abstain
+  gates --> research[RESEARCH]
+  research --> locked[execution_authorized is false]
+  abstain --> locked
+```
+
+<img src="docs/figures/decision-flow.svg" alt="Flow from the packet through the gates to research or abstain">
+
+Reasons accumulate. One bad field does not hide the next. An invalid address and a stale market clock are both listed. Threshold comparisons run only after every numeric field is a finite number greater than or equal to zero, so a negative liquidity value is reported as invalid rather than as "below the floor."
+
+The early exit is narrow. A packet that is not a JSON object returns immediately with `Packet must be an object`, an empty evidence list, a null token key, and coverage `0`. Every dictionary continues through the remaining checks.
+
