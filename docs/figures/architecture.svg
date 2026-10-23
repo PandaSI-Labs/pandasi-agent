@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 440" role="img" aria-labelledby="title desc">
+  <title id="title">Evidence packet, evaluator, and decision</title>
+  <desc id="desc">A packet enters evaluate, which checks schema, clocks, numbers, and vetoes, then returns RESEARCH or ABSTAIN with execution always unauthorized.</desc>
+  <rect width="980" height="440" rx="24" fill="#10211c"/>
+  <text x="40" y="48" fill="#f3f6f2" font-family="Georgia, serif" font-size="26">From packet to decision</text>
+  <text x="40" y="74" fill="#c5d5cc" font-family="Segoe UI, Helvetica, sans-serif" font-size="14">panda_agent.evaluate · policy prototype-v1 · chain 56</text>
+  <g font-family="Segoe UI, Helvetica, sans-serif">
+    <rect x="36" y="108" width="250" height="250" rx="16" fill="#17352c" stroke="#d4b483" stroke-width="1.4"/>
+    <text x="56" y="142" fill="#d4b483" font-size="13" letter-spacing="1.4">1 · PACKET</text>
+    <text x="56" y="176" fill="#f3f6f2" font-size="16">Identity</text>
+    <text x="56" y="198" fill="#c5d5cc" font-size="13">chain 56 and a 42-character address</text>
+    <text x="56" y="230" fill="#f3f6f2" font-size="16">Market</text>
+    <text x="56" y="252" fill="#c5d5cc" font-size="13">liquidity, order, impact, slippage</text>
+    <text x="56" y="284" fill="#f3f6f2" font-size="16">Security</text>
+    <text x="56" y="306" fill="#c5d5cc" font-size="13">tax, holders, permissions, provenance</text>
+    <rect x="346" y="108" width="270" height="250" rx="16" fill="#17352c" stroke="#d4b483" stroke-width="1.4"/>
+    <text x="366" y="142" fill="#d4b483" font-size="13" letter-spacing="1.4">2 · EVALUATE</text>
+    <text x="366" y="180" fill="#f3f6f2" font-size="15">Schema and types</text>
+    <text x="366" y="208" fill="#f3f6f2" font-size="15">Freshness windows</text>
+    <text x="366" y="236" fill="#f3f6f2" font-size="15">Numeric gates</text>
+    <text x="366" y="264" fill="#f3f6f2" font-size="15">Required checks</text>
+    <text x="366" y="292" fill="#f3f6f2" font-size="15">Risk vetoes</text>
+    <text x="366" y="328" fill="#8fd0a8" font-size="13">No network. No signer. No model call.</text>
+    <rect x="676" y="108" width="268" height="250" rx="16" fill="#17352c" stroke="#d4b483" stroke-width="1.4"/>
+    <text x="696" y="142" fill="#d4b483" font-size="13" letter-spacing="1.4">3 · RESULT</text>
+    <text x="696" y="182" fill="#8fd0a8" font-size="18">RESEARCH</text>
+    <text x="696" y="206" fill="#c5d5cc" font-size="13">only when every reason list is empty</text>
+    <text x="696" y="242" fill="#d4766a" font-size="18">ABSTAIN</text>
+    <text x="696" y="266" fill="#c5d5cc" font-size="13">any invalid, stale, or vetoed field</text>
+    <text x="696" y="312" fill="#f3f6f2" font-size="14">execution_authorized = false</text>
+  </g>
+  <path d="M286 230 H346" stroke="#d4b483" stroke-width="1.6" fill="none"/>
+  <path d="M338 224 L346 230 L338 236" fill="#d4b483"/>
+  <path d="M616 230 H676" stroke="#d4b483" stroke-width="1.6" fill="none"/>
+  <path d="M668 224 L676 230 L668 236" fill="#d4b483"/>
+  <text x="40" y="400" fill="#c5d5cc" font-family="Segoe UI, Helvetica, sans-serif" font-size="13">Coverage counts present fields. It does not measure whether those fields are true.</text>
+</svg>
