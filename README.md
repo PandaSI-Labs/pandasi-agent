@@ -31,3 +31,34 @@ python panda_agent.py --input example_missing_evidence.json
 python -m unittest -v
 ```
 
+## What a decision means
+
+`RESEARCH` is the name of an empty block list. Every schema check, clock, numeric gate, required check, and veto passed. The summary string is fixed:
+
+> Prototype checks passed; continue research. No execution is authorized.
+
+`ABSTAIN` means at least one blocked reason was recorded. Missing data, a stale clock, a failed type, a breached gate, or a veto all take this path. The summary string is also fixed:
+
+> Missing, invalid or vetoed evidence blocks further action.
+
+Neither word is a price view, a safety certificate, or an instruction to buy or sell. The same two uncertainty lines and the same two invalidation lines are attached to both decisions:
+
+| Field | Always reported |
+| --- | --- |
+| `uncertainties` | Offline input is not independently verified. Portfolio limits and live quote or intent checks sit outside this prototype. |
+| `invalidation` | Evidence expires or changes. Liquidity or permissions change. |
+| `execution_authorized` | `false` |
+
+Urgency in a surrounding note, a ticker, or a comment inside the packet cannot change the outcome. The checker never reads a field named `metadata`. In the tests, setting `source_verified` to false still abstains when a metadata string tells the program to ignore its rules.
+
+## What this build refuses
+
+| Request | Result in this repository |
+| --- | --- |
+| Sign, swap, bridge, or send | No signer and no transaction path exist |
+| Treat `RESEARCH` as permission | `execution_authorized` stays false |
+| Fill a missing field with a guess | The field becomes a blocked reason |
+| Accept a future or stale observation | The clock check abstains |
+| Follow instructions hidden in token metadata | Those strings are not inputs to the policy |
+| Change the policy from the packet | Thresholds live in `POLICY` inside `panda_agent.py` |
+
