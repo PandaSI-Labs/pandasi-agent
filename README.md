@@ -308,3 +308,40 @@ The saved copy of that shape is `example_output.json`.
 
 Coverage stays `0.889` on later runs because it counts nulls, not age. The stale reasons remain for as long as those two timestamps sit outside the windows. Restoring the two checks to `true` and moving both clocks to the present is what a passing packet requires. Inventing the missing checks inside the program is not.
 
+## Run and test
+
+From this directory, with Python 3.9 or newer:
+
+```text
+python panda_agent.py
+python panda_agent.py --input example_missing_evidence.json
+python -m unittest -v
+```
+
+No third-party package is imported. `argparse`, `json`, `math`, `re`, `datetime`, and `pathlib` are the whole runtime.
+
+| Test | Behavior it locks |
+| --- | --- |
+| `test_valid_research_never_authorizes_execution` | The fresh fixture is `RESEARCH` and execution stays false |
+| `test_missing_each_critical_field_blocks` | Deleting any key abstains |
+| `test_stale_and_future` | Market ages of −1 second and +61 seconds abstain |
+| `test_freshness_boundary` | A market age of exactly 60 seconds still researches |
+| `test_numeric_thresholds` | Liquidity 99999, order 101, order 0, holders 40.1, tax 501, impact 101, and slippage 101 abstain |
+| `test_bool_strings_and_nonfinite_rejected` | The string `true`, boolean `true` used as a number, `NaN`, and infinity abstain |
+| `test_conflict_and_permission_veto` | Either veto set to true abstains |
+| `test_wrong_chain_and_address` | Chain 1 and address `JADE` abstain |
+| `test_untrusted_metadata_cannot_override` | A failed provenance check still abstains when metadata says otherwise |
+| `test_non_object` | A JSON array abstains |
+
+## Repository map
+
+| Path | Role |
+| --- | --- |
+| `panda_agent.py` | Policy constants, `evaluate`, the fixture, and the command line |
+| `test_policy.py` | Clock, threshold, type, and veto tests |
+| `example_output.json` | Saved result of the passing fixture |
+| `example_missing_evidence.json` | Packet with two null checks and fixed clocks |
+| `SYSTEM_PROMPT.md` | Production design note, not executed by this program |
+| `docs/figures/` | Mark, wordmark, lockup, and the diagrams in this brief |
+| `.gitignore` | Ignores bytecode, caches, and local environment files |
+
