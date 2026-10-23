@@ -224,3 +224,39 @@ An order of `0` fails, and an order of `100` passes. Holder concentration of `40
 | `Risk veto: <field>` | `dangerous_permissions` or `provider_conflict` is `true` |
 | `Input error: ...` | The command-line file cannot be read or parsed |
 
+## Fields, checks, and vetoes
+
+| Field | Type | Rule |
+| --- | --- | --- |
+| `chain_id` | integer | Must be 56 |
+| `token_address` | string | `0x` and forty hex digits |
+| `evidence_ids` | list of strings | At least one, and none blank |
+| `market_observed_at` | zoned timestamp | Age from 0 through 60 seconds |
+| `security_observed_at` | zoned timestamp | Age from 0 through 300 seconds |
+| `liquidity_usd` | finite number ≥ 0 | At least 100000 |
+| `order_usd` | finite number ≥ 0 | Greater than 0 and at most 100 |
+| `price_impact_bps` | finite number ≥ 0 | At most 100 |
+| `slippage_bps` | finite number ≥ 0 | At most 100 |
+| `buy_tax_bps` | finite number ≥ 0 | Considered with the sell tax |
+| `sell_tax_bps` | finite number ≥ 0 | The larger tax at most 500 |
+| `classified_top10_pct` | finite number ≥ 0 | At most 40 |
+| `source_verified` | boolean | Must be `true` |
+| `sell_simulation_passed` | boolean | Must be `true` |
+| `permissions_reviewed` | boolean | Must be `true` |
+| `finalized` | boolean | Must be `true` |
+| `dangerous_permissions` | boolean | Must be `false` |
+| `provider_conflict` | boolean | Must be `false` |
+
+| Boolean | Passing value | Failure text |
+| --- | --- | --- |
+| `source_verified` | `true` | `Required check failed: source_verified` |
+| `sell_simulation_passed` | `true` | `Required check failed: sell_simulation_passed` |
+| `permissions_reviewed` | `true` | `Required check failed: permissions_reviewed` |
+| `finalized` | `true` | `Required check failed: finalized` |
+| `dangerous_permissions` | `false` | `Risk veto: dangerous_permissions` |
+| `provider_conflict` | `false` | `Risk veto: provider_conflict` |
+
+JSON `true` and `false` are the only accepted boolean spellings. The string `"true"` fails the type check. JSON `null` also fails that check, and it lowers coverage because null is absent. A required check that is `false` is recorded again as a failed check. A veto records a reason only when the value is `true`; a missing veto field has already failed the type check.
+
+Removing any single key from a complete packet is enough to abstain. The unit tests pop each key in turn and expect `ABSTAIN`.
+
