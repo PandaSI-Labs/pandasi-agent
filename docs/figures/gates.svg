@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 440" role="img" aria-labelledby="title desc">
+  <title id="title">Numeric gates against the fixture</title>
+  <desc id="desc">The built-in fixture sits inside every numeric gate: liquidity 420000, order 50, impact 30, slippage 50, tax 0, and top-ten holders 38 percent.</desc>
+  <rect width="900" height="440" rx="24" fill="#10211c"/>
+  <text x="36" y="46" fill="#f3f6f2" font-family="Georgia, serif" font-size="26">Fixture inside the gates</text>
+  <text x="36" y="72" fill="#c5d5cc" font-family="Segoe UI, Helvetica, sans-serif" font-size="14">Gold mark is the passing limit. Green mark is the fictional jade fixture.</text>
+  <g font-family="Segoe UI, Helvetica, sans-serif" font-size="14" fill="#f3f6f2">
+    <text x="36" y="118">Liquidity USD</text>
+    <rect x="230" y="102" width="520" height="16" rx="8" fill="#17352c"/>
+    <rect x="230" y="102" width="430" height="16" rx="8" fill="#1f6b45"/>
+    <circle cx="360" cy="110" r="6" fill="#d4b483"/>
+    <text x="766" y="116" fill="#c5d5cc">420k vs 100k floor</text>
+    <text x="36" y="164">Order USD</text>
+    <rect x="230" y="148" width="520" height="16" rx="8" fill="#17352c"/>
+    <rect x="230" y="148" width="260" height="16" rx="8" fill="#1f6b45"/>
+    <circle cx="490" cy="156" r="6" fill="#d4b483"/>
+    <text x="766" y="162" fill="#c5d5cc">50 inside (0, 100]</text>
+    <text x="36" y="210">Impact, bps</text>
+    <rect x="230" y="194" width="520" height="16" rx="8" fill="#17352c"/>
+    <rect x="230" y="194" width="156" height="16" rx="8" fill="#1f6b45"/>
+    <circle cx="490" cy="202" r="6" fill="#d4b483"/>
+    <text x="766" y="208" fill="#c5d5cc">30 d 100</text>
+    <text x="36" y="256">Slippage, bps</text>
+    <rect x="230" y="240" width="520" height="16" rx="8" fill="#17352c"/>
+    <rect x="230" y="240" width="260" height="16" rx="8" fill="#1f6b45"/>
+    <circle cx="490" cy="248" r="6" fill="#d4b483"/>
+    <text x="766" y="254" fill="#c5d5cc">50 d 100</text>
+    <text x="36" y="302">Tax, bps</text>
+    <rect x="230" y="286" width="520" height="16" rx="8" fill="#17352c"/>
+    <circle cx="230" cy="294" r="6" fill="#8fd0a8"/>
+    <circle cx="620" cy="294" r="6" fill="#d4b483"/>
+    <text x="766" y="300" fill="#c5d5cc">0 d 500</text>
+    <text x="36" y="348">Top 10 holders</text>
+    <rect x="230" y="332" width="520" height="16" rx="8" fill="#17352c"/>
+    <rect x="230" y="332" width="395" height="16" rx="8" fill="#1f6b45"/>
+    <circle cx="646" cy="340" r="6" fill="#d4b483"/>
+    <text x="766" y="346" fill="#c5d5cc">38% d 40%</text>
+  </g>
+  <text x="36" y="400" fill="#c5d5cc" font-family="Segoe UI, Helvetica, sans-serif" font-size="13">Bars are illustrative, not a common scale. The inequalities in the table are the policy.</text>
+</svg>
