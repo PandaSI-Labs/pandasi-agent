@@ -89,3 +89,45 @@ Reasons accumulate. One bad field does not hide the next. An invalid address and
 
 The early exit is narrow. A packet that is not a JSON object returns immediately with `Packet must be an object`, an empty evidence list, a null token key, and coverage `0`. Every dictionary continues through the remaining checks.
 
+## Decision, identity, and units
+
+A token is an integer chain plus a contract address. The ticker is not an identity.
+
+$$
+\mathrm{token\_key} =
+\begin{cases}
+\texttt{chain\_id} \,\Vert\, \texttt{":"} \,\Vert\, \texttt{token\_address} & \text{if the address string is non-empty} \\
+\mathrm{null} & \text{otherwise}
+\end{cases}
+$$
+
+$$
+\mathrm{chain\_id} = 56
+\qquad
+\texttt{token\_address} \sim \texttt{0x[0-9a-fA-F]\{40\}}
+$$
+
+The chain test uses exact integer type, so a boolean or a float such as `56.0` is an unsupported chain. The address test is a full match: the `0x` prefix, forty hex digits, and nothing else. Mixed case is accepted. There is no checksum step. `token_key` is still formed for a non-empty address that fails the pattern, so the key is a label, not evidence that the address passed.
+
+Let \(B(p)\) be the list of blocked reasons for packet \(p\).
+
+$$
+D(p) =
+\begin{cases}
+\texttt{RESEARCH} & \text{if } B(p) = \emptyset \\
+\texttt{ABSTAIN} & \text{otherwise}
+\end{cases}
+\qquad
+\mathrm{execution\_authorized}(p) = \mathrm{false}
+$$
+
+Rates in the packet are basis points. One basis point is one hundredth of one percent.
+
+$$
+1\,\mathrm{bp} = 10^{-4} = 0.01\%
+\qquad
+x_{\%} = \frac{x_{\mathrm{bps}}}{100}
+$$
+
+So `100` bps is 1 percent, and the tax ceiling of `500` bps is 5 percent. The code compares the raw basis-point numbers. It does not convert them before the test.
+
