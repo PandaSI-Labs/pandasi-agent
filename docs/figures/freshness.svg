@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 300" role="img" aria-labelledby="title desc">
+  <title id="title">Freshness windows</title>
+  <desc id="desc">Market observations must be from 0 to 60 seconds old. Security observations must be from 0 to 300 seconds old. Future timestamps fail both windows.</desc>
+  <rect width="900" height="300" rx="24" fill="#10211c"/>
+  <text x="36" y="46" fill="#f3f6f2" font-family="Georgia, serif" font-size="26">Clocks that still count</text>
+  <text x="36" y="72" fill="#c5d5cc" font-family="Segoe UI, Helvetica, sans-serif" font-size="14">Age is now minus the observed timestamp. A future stamp has negative age and fails.</text>
+  <g font-family="Segoe UI, Helvetica, sans-serif">
+    <text x="36" y="124" fill="#f3f6f2" font-size="16">Market · market_observed_at</text>
+    <rect x="36" y="140" width="70" height="28" rx="6" fill="#3a2422"/>
+    <rect x="106" y="140" width="150" height="28" rx="6" fill="#1f6b45"/>
+    <rect x="256" y="140" width="600" height="28" rx="6" fill="#3a2422"/>
+    <text x="71" y="159" text-anchor="middle" fill="#f3f6f2" font-size="12">future</text>
+    <text x="181" y="159" text-anchor="middle" fill="#f3f6f2" font-size="12">0 to 60s</text>
+    <text x="520" y="159" text-anchor="middle" fill="#f3f6f2" font-size="12">older than 60s · stale</text>
+    <text x="36" y="214" fill="#f3f6f2" font-size="16">Security · security_observed_at</text>
+    <rect x="36" y="230" width="70" height="28" rx="6" fill="#3a2422"/>
+    <rect x="106" y="230" width="420" height="28" rx="6" fill="#1f6b45"/>
+    <rect x="526" y="230" width="330" height="28" rx="6" fill="#3a2422"/>
+    <text x="71" y="249" text-anchor="middle" fill="#f3f6f2" font-size="12">future</text>
+    <text x="316" y="249" text-anchor="middle" fill="#f3f6f2" font-size="12">0 to 300s</text>
+    <text x="680" y="249" text-anchor="middle" fill="#f3f6f2" font-size="12">older than 300s</text>
+  </g>
+</svg>
