@@ -260,3 +260,51 @@ JSON `true` and `false` are the only accepted boolean spellings. The string `"tr
 
 Removing any single key from a complete packet is enough to abstain. The unit tests pop each key in turn and expect `ABSTAIN`.
 
+## Two worked packets
+
+### Passing fixture
+
+`python panda_agent.py` builds this packet with both clocks set to the current UTC time. The address is forty ones. It is a fixture, not a listed contract. Evidence id: `fixture:jade`.
+
+| Field | Value |
+| --- | --- |
+| `chain_id` | 56 |
+| `token_address` | `0x1111111111111111111111111111111111111111` |
+| `liquidity_usd` | 420000 |
+| `order_usd` | 50 |
+| `price_impact_bps` | 30 |
+| `slippage_bps` | 50 |
+| `buy_tax_bps`, `sell_tax_bps` | 0, 0 |
+| `classified_top10_pct` | 38 |
+| Required checks | all `true` |
+| Vetoes | both `false` |
+
+A run of that command returns:
+
+| Result field | Value |
+| --- | --- |
+| `token_key` | `56:0x1111111111111111111111111111111111111111` |
+| `policy_version` | `prototype-v1` |
+| `decision` | `RESEARCH` |
+| `blocked_reasons` | empty |
+| `field_presence_coverage` | `1.0` |
+| `execution_authorized` | `false` |
+
+The saved copy of that shape is `example_output.json`.
+
+### Incomplete sample
+
+`example_missing_evidence.json` keeps the same identity and the same market numbers, then sets `source_verified` and `sell_simulation_passed` to null. Its clocks are fixed at `2026-10-16T17:33:25.657328+00:00`. After the one-minute market window and the five-minute security window, both stamps are stale. A run on 22 October 2026 produced:
+
+| Result field | Value |
+| --- | --- |
+| `decision` | `ABSTAIN` |
+| `field_presence_coverage` | `0.889` |
+| `execution_authorized` | `false` |
+| Blocked reason | `Missing or invalid source_verified` |
+| Blocked reason | `Missing or invalid sell_simulation_passed` |
+| Blocked reason | `Stale or future market_observed_at` |
+| Blocked reason | `Stale or future security_observed_at` |
+
+Coverage stays `0.889` on later runs because it counts nulls, not age. The stale reasons remain for as long as those two timestamps sit outside the windows. Restoring the two checks to `true` and moving both clocks to the present is what a passing packet requires. Inventing the missing checks inside the program is not.
+
