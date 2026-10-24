@@ -1,4 +1,7 @@
-"""PandaSI offline evidence-policy prototype. No LLM, networking or signer."""
+"""Offline evidence-policy checker for PandaSI.
+
+No network, no key, and no model call. RESEARCH is not permission to trade.
+"""
 import argparse
 import json
 import math

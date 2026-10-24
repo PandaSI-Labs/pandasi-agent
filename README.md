@@ -64,8 +64,6 @@ Urgency in a surrounding note, a ticker, or a comment inside the packet cannot c
 
 ## How a packet moves
 
-<img src="docs/figures/architecture.svg" alt="Diagram of an evidence packet entering evaluate and leaving as RESEARCH or ABSTAIN">
-
 `evaluate(packet, now=None)` is the whole policy. `now` defaults to the current UTC time, which lets tests freeze the clock. `main` loads JSON from `--input` or builds the fictional jade fixture, prints indented JSON, and exits. A missing file or broken JSON becomes an abstention whose reason starts with `Input error:`.
 
 ```mermaid
@@ -83,43 +81,19 @@ flowchart TD
   abstain --> locked
 ```
 
-<img src="docs/figures/decision-flow.svg" alt="Flow from the packet through the gates to research or abstain">
-
 Reasons accumulate. One bad field does not hide the next. An invalid address and a stale market clock are both listed. Threshold comparisons run only after every numeric field is a finite number greater than or equal to zero, so a negative liquidity value is reported as invalid rather than as "below the floor."
 
-The early exit is narrow. A packet that is not a JSON object returns immediately with `Packet must be an object`, an empty evidence list, a null token key, and coverage `0`. Every dictionary continues through the remaining checks.
+A value that is not a JSON object returns immediately with `Packet must be an object`, an empty evidence list, a null token key, and coverage `0`. Every JSON object continues through the remaining checks.
 
 ## Decision, identity, and units
 
 A token is an integer chain plus a contract address. The ticker is not an identity.
 
-$$
-\mathrm{token\_key} =
-\begin{cases}
-\texttt{chain\_id} \,\Vert\, \texttt{":"} \,\Vert\, \texttt{token\_address} & \text{if the address string is non-empty} \\
-\mathrm{null} & \text{otherwise}
-\end{cases}
-$$
-
-$$
-\mathrm{chain\_id} = 56
-\qquad
-\texttt{token\_address} \sim \texttt{0x[0-9a-fA-F]\{40\}}
-$$
+`token_key` is `chain_id`, a colon, and `token_address` when the address string is non-empty. Otherwise `token_key` is null. `chain_id` must be the integer `56`. `token_address` must be `0x` followed by exactly 40 hexadecimal digits.
 
 The chain test uses exact integer type, so a boolean or a float such as `56.0` is an unsupported chain. The address test is a full match: the `0x` prefix, forty hex digits, and nothing else. Mixed case is accepted. There is no checksum step. `token_key` is still formed for a non-empty address that fails the pattern, so the key is a label, not evidence that the address passed.
 
-Let \(B(p)\) be the list of blocked reasons for packet \(p\).
-
-$$
-D(p) =
-\begin{cases}
-\texttt{RESEARCH} & \text{if } B(p) = \emptyset \\
-\texttt{ABSTAIN} & \text{otherwise}
-\end{cases}
-\qquad
-\mathrm{execution\_authorized}(p) = \mathrm{false}
-$$
+`decision` is `RESEARCH` when the blocked-reason list is empty, and `ABSTAIN` otherwise. `execution_authorized` is false on both results.
 
 Rates in the packet are basis points. One basis point is one hundredth of one percent.
 
@@ -147,27 +121,11 @@ $$
 
 The market window is one minute. The security window is five minutes. Age is measured in seconds. The boundary is inclusive: a market observation exactly 60 seconds old still passes, and 61 seconds abstains. A timestamp one second in the future abstains. The tests pin those three edges.
 
-<img src="docs/figures/freshness.svg" alt="Market window of 60 seconds and security window of 300 seconds">
+Coverage is a separate count: how many required keys are not null, rounded to three decimal places. It is not a trust score, a probability, or a weighted rating.
 
-Coverage answers a different question: how many required keys are not null. It is rounded to three decimal places. It is not a trust score, a probability, or a weighted rating.
+The required keys are the seven numeric fields, the six boolean fields, `market_observed_at`, `security_observed_at`, `evidence_ids`, `chain_id`, and `token_address`. That set has 18 keys. Coverage is the number of those keys that are not null, divided by 18, then rounded to three decimal places.
 
-$$
-R = N \cup Q \cup \{\texttt{market\_observed\_at}, \texttt{security\_observed\_at}, \texttt{evidence\_ids}, \texttt{chain\_id}, \texttt{token\_address}\}
-$$
-
-$$
-|R| = 18
-\qquad
-C(p) = \mathrm{round}\!\left(\frac{|\{k \in R : p_k \neq \mathrm{null}\}|}{18},\, 3\right)
-$$
-
-\(N\) is the seven numeric fields and \(Q\) is the six boolean fields. A present value can still be the wrong type, a failing check, or a veto. A fully present packet that trips a veto has coverage `1.0` and decision `ABSTAIN`. The incomplete sample below has sixteen present fields:
-
-$$
-C = \mathrm{round}(16/18,\, 3) = 0.889
-$$
-
-<img src="docs/figures/coverage.svg" alt="Sixteen of eighteen required fields present on the incomplete sample">
+A present value can still be the wrong type, a failing check, or a veto. A fully present packet that trips a veto has coverage `1.0` and decision `ABSTAIN`. The incomplete sample has sixteen of the eighteen keys present, so its coverage is `0.889`.
 
 ## Numeric gates
 
@@ -198,8 +156,6 @@ $$
 | \(H_{10}\) | `classified_top10_pct` | at most | 40 | Holder concentration above ceiling | 38 |
 
 An order of `0` fails, and an order of `100` passes. Holder concentration of `40` passes, and `40.1` abstains. Impact, slippage, and tax use the same edge: the limit itself passes, and one basis point past it abstains. Liquidity of `99999` is below the floor.
-
-<img src="docs/figures/gates.svg" alt="Bar diagram of the jade fixture inside each numeric gate">
 
 ### Reason catalog
 
@@ -306,7 +262,7 @@ The saved copy of that shape is `example_output.json`.
 | Blocked reason | `Stale or future market_observed_at` |
 | Blocked reason | `Stale or future security_observed_at` |
 
-Coverage stays `0.889` on later runs because it counts nulls, not age. The stale reasons remain for as long as those two timestamps sit outside the windows. Restoring the two checks to `true` and moving both clocks to the present is what a passing packet requires. Inventing the missing checks inside the program is not.
+Coverage stays `0.889` on later runs because it counts nulls, not age. The stale reasons remain while those two timestamps sit outside the windows. A passing packet needs the two checks set back to `true` and both clocks moved to the present. The program does not fill in the missing checks.
 
 ## Run and test
 
@@ -342,7 +298,7 @@ No third-party package is imported. `argparse`, `json`, `math`, `re`, `datetime`
 | `example_output.json` | Saved result of the passing fixture |
 | `example_missing_evidence.json` | Packet with two null checks and fixed clocks |
 | `SYSTEM_PROMPT.md` | Production design note, not executed by this program |
-| `docs/figures/` | Mark, wordmark, lockup, and the diagrams in this brief |
+| `docs/figures/` | Mark, wordmark, and lockup shown above |
 | `.gitignore` | Ignores bytecode, caches, and local environment files |
 
 ## This build and the production design
@@ -358,7 +314,7 @@ No third-party package is imported. `argparse`, `json`, `math`, `re`, `datetime`
 | Authorization | `execution_authorized` is false | A future intent schema would still not authorize a trade |
 | Policy changes from text | Ignored | Embedded instructions in posts, sites, and tool text are untrusted |
 
-The research tools named in the design note are `get_token_identity`, `get_market_snapshot`, `get_liquidity_quote`, `get_contract_permissions`, `get_holder_distribution`, `get_sell_simulation`, and `get_source_provenance`. They are not implemented in this repository. Until they exist, the honest interface is the offline packet above.
+The research tools named in the design note are `get_token_identity`, `get_market_snapshot`, `get_liquidity_quote`, `get_contract_permissions`, `get_holder_distribution`, `get_sell_simulation`, and `get_source_provenance`. They are not implemented in this repository. The interface here is the offline packet above.
 
 Portfolio limits, a live quote, and an exact order intent are named in the result's uncertainty list because this prototype does not check them. Passing the eighteen fields is not a statement that those later gates would pass.
 
@@ -369,10 +325,5 @@ Portfolio limits, a live quote, and an exact order intent are named in the resul
 | `docs/figures/pandasi-logo.png` | PandaSI lockup |
 | `docs/figures/wordmark.png` | Wordmark |
 | `docs/figures/mark.png` | Panda mark |
-| `docs/figures/architecture.svg` | Packet, evaluator, and result |
-| `docs/figures/decision-flow.svg` | Pass path and abstain path |
-| `docs/figures/freshness.svg` | 60-second and 300-second windows |
-| `docs/figures/gates.svg` | Fixture values against the numeric limits |
-| `docs/figures/coverage.svg` | Sixteen present fields on the incomplete sample |
 
-The mark, wordmark, and lockup are the PandaSI drawings already used by the project. The diagrams were drawn for this brief from the constants and branches in `panda_agent.py`.
+The mark, wordmark, and lockup are the PandaSI drawings used above.
